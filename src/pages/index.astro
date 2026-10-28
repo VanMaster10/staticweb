@@ -1,0 +1,29 @@
+---
+import { getCollection } from 'astro:content';
+
+const productos = await getCollection('productos');
+---
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mi Catálogo</title>
+    <style>
+      .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
+      .card { border: 1px solid #ccc; padding: 1rem; border-radius: 8px; }
+    </style>
+  </head>
+  <body>
+    <h1>Mi Catálogo de Productos</h1>
+    <div class="grid">
+      {productos.map((producto) => (
+        <div class="card">
+          <h2>{producto.data.title}</h2>
+          <p>{producto.data.description}</p>
+          <p><strong>Precio: ${producto.data.price}</strong></p>
+          <p>Categoría: {producto.data.category}</p>
+        </div>
+      ))}
+    </div>
+  </body>
+</html>
