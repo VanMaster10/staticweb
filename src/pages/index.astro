@@ -2,12 +2,14 @@
 import { getCollection } from 'astro:content';
 
 const productos = await getCollection('productos');
+
+const whatsapp = '5491156423421'; // 
 ---
 
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Mi Catálogo</title>
+  <title>Ferreser Herramientas</title>
 
   <style>
     body {
@@ -17,9 +19,28 @@ const productos = await getCollection('productos');
       padding: 20px;
     }
 
+    .header {
+      background: #222;
+      color: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+    }
+
+    .header h1 {
+      margin: 0;
+      margin-bottom: 10px;
+    }
+
+    .header a {
+      color: #25D366;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill,minmax(280px,1fr));
+      grid-template-columns: repeat(auto-fill,minmax(300px,1fr));
       gap: 20px;
     }
 
@@ -30,38 +51,91 @@ const productos = await getCollection('productos');
       box-shadow: 0 2px 8px rgba(0,0,0,.1);
     }
 
-    .card img {
-  width: 100%;
-  height: 220px;
-  object-fit: contain;
-  background: white;
-}
+    .image-container {
+      height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      margin-bottom: 15px;
+    }
 
-    h1 {
-      margin-bottom: 30px;
+    .image-container img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
     }
 
     .precio {
-      font-size: 1.2rem;
-      font-weight: bold;
       color: green;
+      font-size: 1.3rem;
+      font-weight: bold;
+    }
+
+    .btn-wpp {
+      display: block;
+      background: #25D366;
+      color: white;
+      text-decoration: none;
+      text-align: center;
+      padding: 12px;
+      border-radius: 8px;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    .btn-wpp:hover {
+      background: #1ca851;
+    }
+
+    .wpp-float {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 65px;
+      height: 65px;
+      background: #25D366;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 32px;
+      box-shadow: 0 4px 10px rgba(0,0,0,.3);
     }
   </style>
 </head>
 
 <body>
-  <h1>Ferreser Herramientas - Catálogo de Productos</h1>
+
+  <div class="header">
+    <h1>Ferreser Herramientas</h1>
+
+    <p>
+      📞 WhatsApp:
+      <a href={`https://wa.me/${whatsapp}`} target="_blank">
+        Consultar por WhatsApp
+      </a>
+    </p>
+
+    <p>
+      📍 Zona Sur, Buenos Aires - Parque Patricios, CABA
+    </p>
+  </div>
 
   <div class="grid">
+
     {productos.map((producto) => (
+
       <div class="card">
 
-        {producto.data.image && (
+        <div class="image-container">
           <img
             src={producto.data.image}
             alt={producto.data.title}
           />
-        )}
+        </div>
 
         <h2>{producto.data.title}</h2>
 
@@ -75,8 +149,27 @@ const productos = await getCollection('productos');
           Categoría: {producto.data.category}
         </p>
 
+        <a
+          class="btn-wpp"
+          href={`https://wa.me/${whatsapp}?text=Hola,%20consulto%20por:%20${producto.data.title}`}
+          target="_blank"
+        >
+          Consultar por WhatsApp
+        </a>
+
       </div>
+
     ))}
+
   </div>
+
+  <a
+    href={`https://wa.me/${whatsapp}`}
+    class="wpp-float"
+    target="_blank"
+  >
+    💬
+  </a>
+
 </body>
 </html>
