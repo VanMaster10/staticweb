@@ -1,0 +1,40 @@
+{
+  "$ref": "#/definitions/productos",
+  "definitions": {
+    "productos": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number"
+        },
+        "image": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "disponible": {
+          "type": "boolean",
+          "default": true
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "description",
+        "price",
+        "category"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}
