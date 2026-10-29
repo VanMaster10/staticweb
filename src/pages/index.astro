@@ -6,6 +6,50 @@ const productos = await getCollection('productos');
 const whatsapp = '5491156423421';
 
 const grupos = [...new Set(productos.map(p => p.data.grupo || 'Otros'))];
+
+// Función para ordenar de forma estratégica para la venta
+const ordenarEstrategico = (a, b) => {
+  const tituloA = a.data.title.toLowerCase();
+  const tituloB = b.data.title.toLowerCase();
+
+  // 1. Lista de familias AMPLIADA (Menor número = aparece primero)
+  const familias = [
+    'amoladora', 
+    'taladro', 
+    'atornillador', 
+    'rotomartillo', 
+    'llave', 
+    'sierra', 
+    'lijadora', 
+    'bateria', 
+    'cargador'
+  ];
+  
+  const getFamiliaPeso = (titulo) => {
+    // Buscamos si el título incluye alguna de las palabras
+    const index = familias.findIndex(f => titulo.includes(f));
+    return index === -1 ? 99 : index; // 99 para las que no coinciden
+  };
+
+  const familiaA = getFamiliaPeso(tituloA);
+  const familiaB = getFamiliaPeso(tituloB);
+
+  // Si son de distinta familia, se ordenan por la familia
+  if (familiaA !== familiaB) {
+    return familiaA - familiaB;
+  }
+
+  // 2. Si son de la misma familia, priorizamos las que TIENEN batería (1) sobre las que NO (0)
+  const bateriaA = a.data.incluye_bateria ? 1 : 0;
+  const bateriaB = b.data.incluye_bateria ? 1 : 0;
+
+  if (bateriaA !== bateriaB) {
+    return bateriaB - bateriaA; // El 1 va antes que el 0
+  }
+
+  // 3. Si empatan en todo, ordenamos por precio (opcional)
+  return b.data.price - a.data.price;
+};
 ---
 
 <html lang="es">
@@ -229,6 +273,8 @@ const grupos = [...new Set(productos.map(p => p.data.grupo || 'Otros'))];
         {
           productos
             .filter(p => (p.data.grupo || 'Otros') === grupo)
+            // Aplicamos el orden estratégico solo al grupo Individuales
+            .sort((a, b) => grupo === 'Individuales' ? ordenarEstrategico(a, b) : 0)
             .map(producto => {
 
               // Normalizamos los textos para evitar problemas de mayúsculas/minúsculas
