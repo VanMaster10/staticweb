@@ -1,7 +1,7 @@
 ---
 title: "Sierra Circular 1200w"
 description: "Sierra Circular De Mano Total Industrial Con Disco 185mm 1200w"
-price: 200000
+price: 130000
 image: "/circucable.png"
 category: "A Cable"
 grupo: "Individuales"
