@@ -7,4 +7,5 @@ category: "Inalambricos"
 grupo: "Individuales"
 disponible: true
 incluye_bateria: true
+alimentacion: "Bateria"
 ---

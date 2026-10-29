@@ -61,6 +61,8 @@ const grupos = [...new Set(productos.map(p => p.data.grupo || 'Otros'))];
     padding: 16px;
     box-shadow: 0 2px 10px rgba(0,0,0,.08);
     position: relative;
+    display: flex;
+    flex-direction: column;
   }
 
   .destacado {
@@ -114,7 +116,7 @@ const grupos = [...new Set(productos.map(p => p.data.grupo || 'Otros'))];
     font-weight: bold;
     padding: 12px;
     border-radius: 8px;
-    margin-top: 15px;
+    margin-top: auto;
   }
 
   .btn-wpp:hover {
@@ -137,27 +139,66 @@ const grupos = [...new Set(productos.map(p => p.data.grupo || 'Otros'))];
     font-size: 32px;
     box-shadow: 0 4px 10px rgba(0,0,0,.3);
   }
+  
   .badge-verde{
-  display:inline-block;
-  background:#d4edda;
-  color:#155724;
-  padding:6px 10px;
-  border-radius:6px;
-  font-size:12px;
-  font-weight:bold;
-  margin-bottom:10px;
-}
+    display:inline-block;
+    background:#d4edda;
+    color:#155724;
+    padding:6px 10px;
+    border-radius:6px;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:10px;
+    align-self: flex-start;
+  }
 
-.badge-naranja{
-  display:inline-block;
-  background:#fff3cd;
-  color:#856404;
-  padding:6px 10px;
-  border-radius:6px;
-  font-size:12px;
-  font-weight:bold;
-  margin-bottom:10px;
-}
+  .badge-naranja{
+    display:inline-block;
+    background:#fff3cd;
+    color:#856404;
+    padding:6px 10px;
+    border-radius:6px;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:10px;
+    align-self: flex-start;
+  }
+  
+  .badge-cable{
+    display:inline-block;
+    background:#dbeafe;
+    color:#1e40af;
+    padding:6px 10px;
+    border-radius:6px;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:10px;
+    align-self: flex-start;
+  }
+
+  .badge-manual{
+    display:inline-block;
+    background:#e9ecef;
+    color:#495057;
+    padding:6px 10px;
+    border-radius:6px;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:10px;
+    align-self: flex-start;
+  }
+  
+  .badge-kit{
+    display:inline-block;
+    background:#dbeafe;
+    color:#1e40af;
+    padding:6px 10px;
+    border-radius:6px;
+    font-size:12px;
+    font-weight:bold;
+    margin-bottom:10px;
+    align-self: flex-start;
+  }
 </style>
 </head>
 
@@ -188,66 +229,80 @@ const grupos = [...new Set(productos.map(p => p.data.grupo || 'Otros'))];
         {
           productos
             .filter(p => (p.data.grupo || 'Otros') === grupo)
-            .map(producto => (
+            .map(producto => {
 
-            <div class="card">
+              // Normalizamos los textos para evitar problemas de mayúsculas/minúsculas
+              const alimentacion = (producto.data.alimentacion || '').trim().toLowerCase();
+              const grupoLower = (producto.data.grupo || '').trim().toLowerCase();
+              const categoryLower = (producto.data.category || '').trim().toLowerCase();
 
-              {
-                producto.data.destacado && (
-                  <div class="destacado">
-                    🔥 OFERTA
+              // Evaluamos si es Kit
+              const esKit = grupoLower === 'kits';
+
+              // Evaluamos si es Cable (revisando alimentacion o category)
+              const esCable = alimentacion === 'cable' || categoryLower === 'a cable';
+
+              // Evaluamos si es Manual (revisando alimentacion o el nombre del grupo)
+              const esManual = alimentacion === 'manual' || grupoLower === 'manuales' || categoryLower === 'manuales';
+
+              return (
+                <div class="card">
+
+                  {
+                    producto.data.destacado && (
+                      <div class="destacado">
+                        🔥 OFERTA
+                      </div>
+                    )
+                  }
+
+                  {/* Lógica de Badges Corregida */}
+                  {
+                    esKit ? (
+                      <div class="badge-kit">🧰 Kit completo</div>
+                    ) : esCable ? (
+                      <div class="badge-cable">🔌 Eléctrica</div>
+                    ) : esManual ? (
+                      <div class="badge-manual">🔧 Manual</div>
+                    ) : producto.data.incluye_bateria ? (
+                      <div class="badge-verde">🔋 Con batería</div>
+                    ) : (
+                      <div class="badge-naranja">⚡ Solo herramienta</div>
+                    )
+                  }
+                  
+                  <div class="image-container">
+                    <img
+                      src={producto.data.image}
+                      alt={producto.data.title}
+                    />
                   </div>
-                )
-              }
 
-              {
-  producto.data.grupo === 'Kits' ? (
-    <div class="badge-kit">
-      🧰 Kit completo
-    </div>
-  ) : producto.data.incluye_bateria ? (
-    <div class="badge-verde">
-      🔋 Con batería
-    </div>
-  ) : (
-    <div class="badge-naranja">
-      ⚡ Solo herramienta
-    </div>
-  )
-}
+                  <h2>{producto.data.title}</h2>
 
-              <div class="image-container">
-                <img
-                  src={producto.data.image}
-                  alt={producto.data.title}
-                />
-              </div>
+                  <p class="descripcion">
+                    {producto.data.description}
+                  </p>
 
-              <h2>{producto.data.title}</h2>
+                  <p class="precio">
+                    ${producto.data.price}
+                  </p>
 
-              <p class="descripcion">
-                {producto.data.description}
-              </p>
+                  <p>
+                    Categoría: {producto.data.category}
+                  </p>
 
-              <p class="precio">
-                ${producto.data.price}
-              </p>
+                  <a
+                    class="btn-wpp"
+                    href={`https://wa.me/${whatsapp}?text=Hola, consulto por ${producto.data.title}`}
+                    target="_blank"
+                  >
+                    Consultar por WhatsApp
+                  </a>
 
-              <p>
-                Categoría: {producto.data.category}
-              </p>
-
-              <a
-                class="btn-wpp"
-                href={`https://wa.me/${whatsapp}?text=Hola, consulto por ${producto.data.title}`}
-                target="_blank"
-              >
-                Consultar por WhatsApp
-              </a>
-
-            </div>
-
-          ))
+                </div>
+              )
+            })
         }
       </div>
     </>
