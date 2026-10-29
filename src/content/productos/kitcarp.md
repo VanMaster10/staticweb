@@ -4,5 +4,7 @@ description: "Kit Taladro Percutor + Sierra Circular + Lijadora Total"
 price: 440000
 image: "/kitcarp.png"
 category: "Inalambricos"
+grupo: "Kits"
+destacado: true
 disponible: true
 ---

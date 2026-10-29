@@ -4,5 +4,7 @@ description: "Kit RotoMartillo - Amoladora Angular - Atornilador Inalambrico - 2
 price: 435000
 image: "/kitroto.png"
 category: "Inalambricos"
+grupo: "Kits"
+destacado: true
 disponible: true
 ---

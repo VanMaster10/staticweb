@@ -23,6 +23,18 @@
           "type": "boolean",
           "default": true
         },
+        "grupo": {
+          "type": "string",
+          "default": "Otros"
+        },
+        "destacado": {
+          "type": "boolean",
+          "default": false
+        },
+        "incluye_bateria": {
+          "type": "boolean",
+          "default": false
+        },
         "$schema": {
           "type": "string"
         }
@@ -31,6 +43,7 @@
         "title",
         "description",
         "price",
+        "image",
         "category"
       ],
       "additionalProperties": false

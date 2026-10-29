@@ -4,5 +4,7 @@ description: "Amoladora 1200w Taladro 66nm Impacto 405nm - 2 Baterias."
 price: 415000
 image: "/kitimp.png"
 category: "Inalambricos"
+grupo: "Kits"
+destacado: true
 disponible: true
 ---

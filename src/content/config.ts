@@ -6,9 +6,15 @@ const productos = defineCollection({
     title: z.string(),
     description: z.string(),
     price: z.number(),
-    image: z.string().optional(),
+    image: z.string(),
     category: z.string(),
     disponible: z.boolean().default(true),
+
+    grupo: z.string().default('Otros'),
+    destacado: z.boolean().default(false),
+
+    // IMPORTANTE
+    incluye_bateria: z.boolean().default(false)
   }),
 });
 

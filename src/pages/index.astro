@@ -3,173 +3,264 @@ import { getCollection } from 'astro:content';
 
 const productos = await getCollection('productos');
 
-const whatsapp = '5491156423421'; // 
+const whatsapp = '5491156423421';
+
+const grupos = [...new Set(productos.map(p => p.data.grupo || 'Otros'))];
 ---
 
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>Ferreser Herramientas</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      margin: 0;
-      padding: 20px;
-    }
+<title>Ferreser Herramientas</title>
 
-    .header {
-      background: #222;
-      color: white;
-      padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 30px;
-    }
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    margin: 0;
+    padding: 20px;
+  }
 
-    .header h1 {
-      margin: 0;
-      margin-bottom: 10px;
-    }
+  .header {
+    background: #222;
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+  }
 
-    .header a {
-      color: #25D366;
-      text-decoration: none;
-      font-weight: bold;
-    }
+  .header h1 {
+    margin: 0 0 10px 0;
+  }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill,minmax(300px,1fr));
-      gap: 20px;
-    }
+  .header a {
+    color: #25D366;
+    font-weight: bold;
+    text-decoration: none;
+  }
 
-    .card {
-      background: white;
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.1);
-    }
+  .grupo-titulo {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    color: #222;
+    border-left: 6px solid #25D366;
+    padding-left: 12px;
+  }
 
-    .image-container {
-      height: 250px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: white;
-      margin-bottom: 15px;
-    }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill,minmax(320px,1fr));
+    gap: 20px;
+  }
 
-    .image-container img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.08);
+    position: relative;
+  }
 
-    .precio {
-      color: green;
-      font-size: 1.3rem;
-      font-weight: bold;
-    }
+  .destacado {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #ff5722;
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: bold;
+  }
 
-    .btn-wpp {
-      display: block;
-      background: #25D366;
-      color: white;
-      text-decoration: none;
-      text-align: center;
-      padding: 12px;
-      border-radius: 8px;
-      margin-top: 15px;
-      font-weight: bold;
-    }
+  .image-container {
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+  }
 
-    .btn-wpp:hover {
-      background: #1ca851;
-    }
+  .image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
 
-    .wpp-float {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      width: 65px;
-      height: 65px;
-      background: #25D366;
-      color: white;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      font-size: 32px;
-      box-shadow: 0 4px 10px rgba(0,0,0,.3);
-    }
-  </style>
+  .card h2 {
+    min-height: 70px;
+    margin-bottom: 10px;
+  }
+
+  .card .descripcion {
+    min-height: 80px;
+  }
+
+  .precio {
+    color: green;
+    font-weight: bold;
+    font-size: 28px;
+    margin: 15px 0;
+  }
+
+  .btn-wpp {
+    display: block;
+    text-align: center;
+    background: #25D366;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 15px;
+  }
+
+  .btn-wpp:hover {
+    background: #1fa851;
+  }
+
+  .wpp-float {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 65px;
+    height: 65px;
+    background: #25D366;
+    color: white;
+    border-radius: 50%;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    box-shadow: 0 4px 10px rgba(0,0,0,.3);
+  }
+  .badge-verde{
+  display:inline-block;
+  background:#d4edda;
+  color:#155724;
+  padding:6px 10px;
+  border-radius:6px;
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+.badge-naranja{
+  display:inline-block;
+  background:#fff3cd;
+  color:#856404;
+  padding:6px 10px;
+  border-radius:6px;
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+</style>
 </head>
 
 <body>
 
-  <div class="header">
-    <h1>Ferreser Herramientas</h1>
+<div class="header">
+  <h1>🔧 Ferreser Herramientas</h1>
 
-    <p>
-      📞 WhatsApp:
-      <a href={`https://wa.me/${whatsapp}`} target="_blank">
-        Consultar por WhatsApp
-      </a>
-    </p>
+  <p>
+    📞 WhatsApp:
+    <a href={`https://wa.me/${whatsapp}`} target="_blank">
+      11 5642-3421
+    </a>
+  </p>
 
-    <p>
-      📍 Zona Sur, Buenos Aires - Parque Patricios, CABA
-    </p>
-  </div>
+  <p>
+    📍 Zona Sur y CABA
+  </p>
+</div>
 
-  <div class="grid">
+{
+  grupos.map(grupo => (
+    <>
+      <h2 class="grupo-titulo">{grupo}</h2>
 
-    {productos.map((producto) => (
+      <div class="grid">
 
-      <div class="card">
+        {
+          productos
+            .filter(p => (p.data.grupo || 'Otros') === grupo)
+            .map(producto => (
 
-        <div class="image-container">
-          <img
-            src={producto.data.image}
-            alt={producto.data.title}
-          />
-        </div>
+            <div class="card">
 
-        <h2>{producto.data.title}</h2>
+              {
+                producto.data.destacado && (
+                  <div class="destacado">
+                    🔥 OFERTA
+                  </div>
+                )
+              }
 
-        <p>{producto.data.description}</p>
+              {
+  producto.data.grupo === 'Kits' ? (
+    <div class="badge-kit">
+      🧰 Kit completo
+    </div>
+  ) : producto.data.incluye_bateria ? (
+    <div class="badge-verde">
+      🔋 Con batería
+    </div>
+  ) : (
+    <div class="badge-naranja">
+      ⚡ Solo herramienta
+    </div>
+  )
+}
 
-        <p class="precio">
-          ${producto.data.price}
-        </p>
+              <div class="image-container">
+                <img
+                  src={producto.data.image}
+                  alt={producto.data.title}
+                />
+              </div>
 
-        <p>
-          Categoría: {producto.data.category}
-        </p>
+              <h2>{producto.data.title}</h2>
 
-        <a
-          class="btn-wpp"
-          href={`https://wa.me/${whatsapp}?text=Hola,%20consulto%20por:%20${producto.data.title}`}
-          target="_blank"
-        >
-          Consultar por WhatsApp
-        </a>
+              <p class="descripcion">
+                {producto.data.description}
+              </p>
 
+              <p class="precio">
+                ${producto.data.price}
+              </p>
+
+              <p>
+                Categoría: {producto.data.category}
+              </p>
+
+              <a
+                class="btn-wpp"
+                href={`https://wa.me/${whatsapp}?text=Hola, consulto por ${producto.data.title}`}
+                target="_blank"
+              >
+                Consultar por WhatsApp
+              </a>
+
+            </div>
+
+          ))
+        }
       </div>
+    </>
+  ))
+}
 
-    ))}
-
-  </div>
-
-  <a
-    href={`https://wa.me/${whatsapp}`}
-    class="wpp-float"
-    target="_blank"
-  >
-    💬
-  </a>
+<a
+  href={`https://wa.me/${whatsapp}`}
+  class="wpp-float"
+  target="_blank"
+>
+💬
+</a>
 
 </body>
 </html>
